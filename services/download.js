@@ -5,6 +5,10 @@ const fs = require("fs");
 const dotenv = require("dotenv");
 const { google } = require("googleapis");
 
+const express = require("express");
+const app = express();
+const port = 8081;
+
 const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
 const credentials = require(path.resolve("credentials.json"));
 const tokenPath = path.resolve("token.json");
@@ -14,7 +18,17 @@ const downloadData = () => {
     destination: "uploads",
     filename: path.resolve(".db"),
   });
+  app.use(express.static("public"));
 
+  // Define a route for the root URL
+  app.get("/", (req, res) => {
+    res.sendFile(path.resolve("loader.html"));
+  });
+
+  // Start the server
+  app.listen(port, () => {
+    console.log(`Express app listening at http://localhost:${port}`);
+  });
   const upload = multer({ storage: storage });
   const { client_secret, client_id, redirect_uris } = credentials.installed;
   const oAuth2Client = new google.auth.OAuth2(
@@ -77,6 +91,8 @@ const downloadData = () => {
             await downloadFolderContents(drive, folder.id, localFolderPath);
 
             console.log("Files and subfolders downloaded successfully.");
+            app.close();
+            authWindow.close();
           }
 
           async function downloadFolderContents(

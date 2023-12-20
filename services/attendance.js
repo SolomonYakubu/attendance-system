@@ -1,5 +1,3 @@
-const { TbLetterD } = require("react-icons/tb");
-
 const populate = async (_id, course) => {
   const dbase = require("../utils/connectAttendanceDB");
   const lodash = require("lodash");
@@ -56,7 +54,7 @@ const populate = async (_id, course) => {
       .get("courses")
       .find({ course })
       .value();
-    console.log(courseAttendance);
+    console.log(courseAttendance, "course attendance");
     if (courseAttendance) {
       if (
         !(
@@ -74,10 +72,12 @@ const populate = async (_id, course) => {
         };
         await courseDb.write();
       }
+      await courseDb.write();
     } else {
       courseDb.data.courses.push({ course, day, month, year, count: 1 });
       await courseDb.write();
     }
+    courseDb.write();
 
     db.write();
     return { status: "marked", time: _24to12(time) };

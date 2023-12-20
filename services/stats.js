@@ -127,8 +127,8 @@ const getTotalCount = async (course) => {
   const courseDb = await courseAttendanceDbase();
   courseDb.chain = lodash.chain(courseDb.data);
   let courseAttendance = courseDb.chain.get("courses").find({ course }).value();
-  console.log(courseAttendance);
-  return courseAttendance;
+  // console.log(courseAttendance);
+  return courseAttendance.count;
 };
 const getDefaulters = async (course) => {
   let defaulter = [];

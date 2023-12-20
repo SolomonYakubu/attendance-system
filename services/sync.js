@@ -2,9 +2,12 @@ const multer = require("multer");
 const { BrowserWindow } = require("electron");
 const path = require("path");
 const fs = require("fs");
+const express = require("express");
+const app = express();
+const port = 8081;
 const dotenv = require("dotenv");
 const { google } = require("googleapis");
-const { version } = require("os");
+
 const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
 const credentials = require(path.resolve("credentials.json"));
 const tokenPath = path.resolve("token.json");
@@ -14,7 +17,17 @@ const syncData = () => {
     destination: "uploads",
     filename: path.resolve(".db"),
   });
+  app.use(express.static("public"));
 
+  // Define a route for the root URL
+  app.get("/", (req, res) => {
+    res.sendFile(path.resolve("sync.html"));
+  });
+
+  // Start the server
+  app.listen(port, () => {
+    console.log(`Express app listening at http://localhost:${port}`);
+  });
   const upload = multer({ storage: storage });
   const { client_secret, client_id, redirect_uris } = credentials.installed;
   const oAuth2Client = new google.auth.OAuth2(
@@ -120,6 +133,8 @@ const syncData = () => {
             }
 
             console.log("Folder uploaded successfully.");
+            app.close();
+            authWindow.close();
           }
 
           // Function to find an existing folder by name

@@ -46,7 +46,7 @@ const matchUser = async (event, arg) => {
                   .get("users")
                   .find({ _id: userId })
                   .value();
-
+                console.log(user);
                 if (max >= 23) {
                   if (arg.status === "signIn") {
                     const attendanceResult = await attendance.populate(

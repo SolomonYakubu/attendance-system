@@ -5,7 +5,7 @@ const { v4: uuid } = require("uuid");
 const departments = require(path.resolve("department.json"));
 const fs = require("fs");
 const registerUser = async (event, arg) => {
-  console.log(departments);
+  console.log(arg);
   const department = arg.department;
   const departmentId = departments.courses.filter(
     (item) => item.name === department

@@ -64,7 +64,7 @@ export default function Login() {
         alert.show(event.data.status, { type: "error" });
       } else {
         alert.show("Sign Up Successful", { type: "success" });
-        setTimeout(() => navigate("/match"), 1500);
+        setTimeout(() => navigate("/login"), 1500);
       }
     }
     window.removeEventListener("message", getResponse);

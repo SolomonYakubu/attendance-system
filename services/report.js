@@ -115,6 +115,7 @@ const getTotalCount = async (course) => {
     .get("courses")
     .find({ course })
     .value().count;
+  console.log(courseAttendance);
   return courseAttendance;
 };
 const report = async (event, arg) => {
